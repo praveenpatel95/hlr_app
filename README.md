@@ -42,7 +42,7 @@ Run `php artisan passport:install`
   
 
 ## Postman Collection
-Import the provided Postman collection (Postman collection) into your Postman application 
+Import the provided Postman collection (HLR Test API's.postman_collection) into your Postman application 
 to interact with the API.
 
 ## Note for Postman

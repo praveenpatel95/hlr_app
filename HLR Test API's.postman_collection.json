@@ -1,0 +1,1261 @@
+{
+	"info": {
+		"_postman_id": "e507a69f-c09d-4e9b-a3ff-05c0a1fd3c8a",
+		"name": "HLR Test API's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9499370",
+		"_collection_link": "https://www.postman.com/cloudy-comet-97263/workspace/inns-backed-2024/collection/9499370-e507a69f-c09d-4e9b-a3ff-05c0a1fd3c8a?action=share&source=collection_link&creator=9499370"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response?.data?.token) {\r",
+									"    pm.collectionVariables.set(\"authToken\", response.data.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "prem@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response?.data?.token) {\r",
+									"    pm.collectionVariables.set(\"authToken\", response.data.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "lala",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "prem@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Search Patient",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/search?group=A&date_range=2024-07-01 - 2024-07-5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"search"
+							],
+							"query": [
+								{
+									"key": "group",
+									"value": "A"
+								},
+								{
+									"key": "date_range",
+									"value": "2024-07-01 - 2024-07-5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FHIR",
+			"item": [
+				{
+					"name": "Patients",
+					"item": [
+						{
+							"name": "Get All patients",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/patients",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"patients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/patients/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"patients",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/patients/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"patients",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a patient",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Prem",
+											"type": "text"
+										},
+										{
+											"key": "birthDate",
+											"value": "1991-02-03",
+											"type": "text"
+										},
+										{
+											"key": "group_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "consultation_date",
+											"value": "2023-02-03",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/patients",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"patients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a patient",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Praveen kumar patel",
+											"type": "text"
+										},
+										{
+											"key": "birthDate",
+											"value": "1991-02-03",
+											"type": "text"
+										},
+										{
+											"key": "group_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "consultation_date",
+											"value": "2023-02-03",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/patients/4?_method=put",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"patients",
+										"4"
+									],
+									"query": [
+										{
+											"key": "_method",
+											"value": "put"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Practitioner",
+					"item": [
+						{
+							"name": "Get All practitioner",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/practitioner",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"practitioner"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/practitioner/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"practitioner",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/practitioner/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"practitioner",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a practitioner",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Prem",
+											"type": "text"
+										},
+										{
+											"key": "birthDate",
+											"value": "1991-02-03",
+											"type": "text"
+										},
+										{
+											"key": "gender",
+											"value": "M",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "2023-02-03",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "telecom",
+											"value": "1972333",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/practitioner",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"practitioner"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a patient",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Prem",
+											"type": "text"
+										},
+										{
+											"key": "birthDate",
+											"value": "1991-02-03",
+											"type": "text"
+										},
+										{
+											"key": "gender",
+											"value": "F",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Udaipur",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "telecom",
+											"value": "333",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/practitioner/2?_method=put",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"practitioner",
+										"2"
+									],
+									"query": [
+										{
+											"key": "_method",
+											"value": "put"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Schedule",
+					"item": [
+						{
+							"name": "Get All Scheduled",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/schedule",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"schedule"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/schedule/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"schedule",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/schedule/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"schedule",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a Schedule",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "start_time",
+											"value": "2024-02-03 10:50",
+											"type": "text"
+										},
+										{
+											"key": "end_time",
+											"value": "2024-02-03 11:25",
+											"type": "text"
+										},
+										{
+											"key": "is_available",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "practitioner_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/schedule",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"schedule"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a schedule",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "practitioner_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "start_time",
+											"value": "2024-02-03 10:50",
+											"type": "text"
+										},
+										{
+											"key": "end_time",
+											"value": "2024-02-03 10:50",
+											"type": "text"
+										},
+										{
+											"key": "is_available",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/schedule/2?_method=put",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"schedule",
+										"2"
+									],
+									"query": [
+										{
+											"key": "_method",
+											"value": "put"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Appointment",
+					"item": [
+						{
+							"name": "Get All Appointment",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/appointments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"appointments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/appointments/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"appointments",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/appointments/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"appointments",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a Appointment",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "patient_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "practitioner_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "schedule_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/appointments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"appointments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a schedule",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{authToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "patient_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "practitioner_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "schedule_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/remcare/hl7/fhir/appointments/1?_method=put",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"remcare",
+										"hl7",
+										"fhir",
+										"appointments",
+										"1"
+									],
+									"query": [
+										{
+											"key": "_method",
+											"value": "put"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
